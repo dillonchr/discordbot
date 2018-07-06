@@ -1,0 +1,26 @@
+{
+  "name": "@dillonchr/discordbot",
+  "version": "1.0.0",
+  "description": "discord.io wrapper to make it more like botkit",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dillonchr/discordbot.git"
+  },
+  "keywords": [
+    "discord",
+    "bot"
+  ],
+  "author": "@dillonchr",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/dillonchr/discordbot/issues"
+  },
+  "homepage": "https://github.com/dillonchr/discordbot#readme",
+  "dependencies": {
+    "discord.io": "^2.5.3"
+  }
+}
