@@ -2,13 +2,11 @@ const {Client} = require('discord.io');
 const handlers = [];
 const channelHandlers = [];
 const bot = new Client({token: process.env.DISCORD_TOKEN, autorun: true});
-let botIsConnected = false;
 
-bot.on('connect', () => {
+bot.on('ready', () => {
     if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'prod') {
         console.log('Location confirmed. Sending supplies.');
     }
-    botIsConnected = true;
 });
 
 bot.on('message', (user, userId, channelId, msg, e) => {
@@ -45,7 +43,7 @@ module.exports = {
         channelHandlers.push([channelId, callback]);
     },
     sendMessage: (to, message) => {
-        if (bot && botIsConnected) {
+        if (bot) {
             bot.sendMessage({to, message});
         }
     },
