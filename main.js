@@ -7,6 +7,7 @@ bot.on('connect', () => {
     if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'prod') {
         console.log('Location confirmed. Sending supplies.');
     }
+    bot.isConnected = true;
 });
 
 bot.on('message', (user, userId, channelId, msg, e) => {
@@ -41,6 +42,11 @@ module.exports = {
     },
     hearsAnythingInChannel: (channelId, callback) => {
         channelHandlers.push([channelId, callback]);
+    },
+    sendMessage: (to, message) => {
+        if (bot && bot.isConnected) {
+            bot.sendMessage({to, message});
+        }
     },
     get id() {
         return bot.id;
