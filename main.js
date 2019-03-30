@@ -1,7 +1,7 @@
-const {Client} = require('discord.io');
+const {Client} = require('discord.js');
 const handlers = [];
 const channelHandlers = [];
-const bot = new Client({token: process.env.DISCORD_TOKEN, autorun: true});
+const bot = new Client();
 
 bot.on('ready', () => {
     if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'prod') {
@@ -9,31 +9,44 @@ bot.on('ready', () => {
     }
 });
 
-bot.on('message', (user, userId, channelId, msg, e) => {
-    if (userId !== bot.id) {
+bot.on('message', (message) => {
+    const {author, content, channel} = message;
+    if (!author.bot) {
         try {
-            const matchedChannelHandlers = channelHandlers.filter(([id]) => channelId === id);
+            const matchedChannelHandlers = channelHandlers.filter(([id]) => channel.id === id);
             if (matchedChannelHandlers.length) {
                 matchedChannelHandlers.forEach(([id, callback]) => {
-                    callback(reply => {
-                        bot.sendMessage({to: channelId, message: reply});
-                    }, e.d);
+                    callback({
+                        author,
+                        channel,
+                        content,
+                        reply: reply => {
+                            message.reply(reply);
+                        }
+                    });
                 });
             } else {
-                const lowerCasedMsg = msg.toLowerCase();
+                const lowerCasedMsg = content.toLowerCase();
                 const [ignore, fn] = handlers.find(([triggers]) => {
                     return triggers.some(t => {
                         return lowerCasedMsg.includes(t);
                     });
                 });
-                fn(reply => {
-                    return bot.sendMessage({to: channelId, message: reply});
-                }, e.d);
+                fn({
+                    author,
+                    channel,
+                    content,
+                    reply: reply => {
+                        return message.reply(reply);
+                    }
+                });
             }
         } catch (ignore) {
         }
     }
 });
+
+bot.login(process.env.DISCORD_TOKEN);
 
 module.exports = {
     hears: (triggers, callback) => {
@@ -42,12 +55,12 @@ module.exports = {
     hearsAnythingInChannel: (channelId, callback) => {
         channelHandlers.push([channelId, callback]);
     },
-    sendMessage: (to, message) => {
+    sendMessage: (userId, message) => {
         if (bot) {
-            bot.sendMessage({to, message});
+            bot.fetchUser(userId)
+                .then((user) => {
+                    user.send(message);
+                });
         }
-    },
-    get id() {
-        return bot.id;
     }
 };
