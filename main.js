@@ -21,7 +21,7 @@ bot.on('message', (message) => {
                         channel,
                         content,
                         reply: reply => {
-                            message.reply(reply);
+                            channel.send(reply);
                         }
                     });
                 });
