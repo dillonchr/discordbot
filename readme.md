@@ -30,8 +30,8 @@ This takes an array of possible substrings to find in a posted message and will 
 
 ```js
 const bot = require('@dillonchr/discordbot');
-bot.hears(['hello', 'goodbye'], (reply, msg) => {
-    if (msg.content.includes('hello')) {
+bot.hears(['hello', 'goodbye'], ({reply, content}) => {
+    if (content.includes('hello')) {
         reply('Well hello there :sun_with_face:');
     } else {
         reply('Okay then. Happy trails!');
@@ -43,14 +43,14 @@ bot.hears(['hello', 'goodbye'], (reply, msg) => {
 
 ### hearsAnythingInChannel
 
-Very similar to `hears` but doesn't require a direct-message or direct-mention. This will listen to all messages posted in a specific channel. Getting channel IDs isn't fun though. I think the way I've done it in the past is just by going to the channel I care about, messaging in it and running `console.log(m.channel_id)` and using that output.
+Very similar to `hears` but doesn't require a direct-message or direct-mention. This will listen to all messages posted in a specific channel. Getting channel IDs isn't fun though. I think the way I've done it in the past is just by going to the channel I care about, messaging in it and running `console.log(channel.id)` and using that output.
 
 
 
 ```js
 const bot = require('@dillonchr/discordbot');
-bot.hearsAnythingInChannel('12345678901234567890', (reply, msg) => {
-    if (msg.content.includes('whoami')) {
+bot.hearsAnythingInChannel('12345678901234567890', ({reply, content}) => {
+    if (content.includes('whoami')) {
         reply('You am I');
     } else {
         reply('Fancy seeing you around here.');
