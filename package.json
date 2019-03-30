@@ -1,7 +1,7 @@
 {
   "name": "@dillonchr/discordbot",
   "version": "1.0.4",
-  "description": "discord.io wrapper to make it more like botkit",
+  "description": "discord.js wrapper to make it more like botkit",
   "main": "main.js",
   "scripts": {
     "test": "echo 0"
