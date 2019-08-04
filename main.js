@@ -11,7 +11,9 @@ bot.on('ready', () => {
 
 bot.on('message', (message) => {
     const {author, content, channel} = message;
-    if (!author.bot) {
+    //  now that we have multiple bots
+    //  let's just prevent one bot from talking to itself
+    if (author.username !== bot.user.username) {
         try {
             const matchedChannelHandlers = channelHandlers.filter(([id]) => channel.id === id);
             if (matchedChannelHandlers.length) {
