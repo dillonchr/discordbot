@@ -22,8 +22,8 @@ bot.on('message', (message) => {
                         author,
                         channel,
                         content,
-                        reply: reply => {
-                            channel.send(reply);
+                        reply: (reply, opts) => {
+                            channel.send(reply, opts);
                         }
                     });
                 });
@@ -38,8 +38,8 @@ bot.on('message', (message) => {
                     author,
                     channel,
                     content,
-                    reply: reply => {
-                        return message.reply(reply);
+                    reply: (reply, opts) => {
+                        return message.reply(reply, opts);
                     }
                 });
             }
